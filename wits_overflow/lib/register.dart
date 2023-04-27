@@ -5,11 +5,86 @@ import 'package:wits_overflow/homepage.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:wits_overflow/signin.dart';
 
+import 'package:flutter_test/flutter_test.dart';
+import 'package:wits_overflow/register.dart';
+
+void main() {
+  group('Register widget', () {
+    late Register register;
+
+    setUp(() {
+      register = const Register(onTap: null);
+    });
+
+    testWidgets('has an email text field', (tester) async {
+      await tester.pumpWidget(register);
+
+      expect(find.byType(TextField), findsNWidgets(2));
+      expect(find.widgetWithText(TextField, 'email address'), findsOneWidget);
+    });
+
+    testWidgets('has a password text field', (tester) async {
+      await tester.pumpWidget(register);
+
+      expect(find.byType(TextField), findsNWidgets(2));
+      expect(find.widgetWithText(TextField, 'Password'), findsOneWidget);
+    });
+
+    testWidgets('has a confirm password text field', (tester) async {
+      await tester.pumpWidget(register);
+
+      expect(find.byType(TextField), findsNWidgets(2));
+      expect(
+          find.widgetWithText(TextField, 'Confirm Password'), findsOneWidget);
+    });
+
+    testWidgets('typing in the email field updates the controller value',
+        (tester) async {
+      await tester.pumpWidget(register);
+
+      const email = 'test@example.com';
+      await tester.enterText(
+          find.widgetWithText(TextField, 'email address'), email);
+
+      expect(register._emailController.text, equals(email));
+    });
+
+    testWidgets('typing in the password field updates the controller value',
+        (tester) async {
+      await tester.pumpWidget(register);
+
+      const password = 'password';
+      await tester.enterText(
+          find.widgetWithText(TextField, 'Password'), password);
+
+      expect(register._passwordController.text, equals(password));
+    });
+
+    testWidgets(
+        'typing in the confirm password field updates the controller value',
+        (tester) async {
+      await tester.pumpWidget(register);
+
+      const password = 'password';
+      await tester.enterText(
+          find.widgetWithText(TextField, 'Confirm Password'), password);
+
+      expect(register._confirmPasswordController.text, equals(password));
+    });
+  });
+}
+
 enum rolesEnum { Moderator, RegularUser }
 
 class Register extends StatefulWidget {
   final void Function()? onTap;
   const Register({super.key, required this.onTap});
+
+  get _emailController => null;
+
+  get _passwordController => null;
+
+  get _confirmPasswordController => null;
 
   @override
   State<Register> createState() => _RegisterState();
@@ -42,11 +117,14 @@ class _RegisterState extends State<Register> {
           ),
         ));
       } on FirebaseAuthException catch (e) {
-        if (e.code == "invalid-email") { //Incorrect Email Format
+        if (e.code == "invalid-email") {
+          //Incorrect Email Format
           invalidEmail();
-        } else if (e.code == "weak-password") { //Password too easy to guess
-          weakPassword(); 
-        } else if (e.code == "email-already-in-use") { //Already existing email
+        } else if (e.code == "weak-password") {
+          //Password too easy to guess
+          weakPassword();
+        } else if (e.code == "email-already-in-use") {
+          //Already existing email
           showDialog(
             context: context,
             builder: (context) {

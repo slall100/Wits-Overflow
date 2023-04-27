@@ -5,34 +5,33 @@ import 'package:flutter/services.dart';
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key});
 
-
   @override
   State<ResetPassword> createState() => _ResetPasswordState();
 }
 
-
-class _ResetPasswordState extends State<ResetPassword>{
+class _ResetPasswordState extends State<ResetPassword> {
   final _emailController = TextEditingController();
 
   @override
-  void dispose(){
+  void dispose() {
     _emailController.dispose();
     super.dispose();
   }
 
   Future resetPassword() async {
     try {
-      await FirebaseAuth.instance.
-      sendPasswordResetEmail(email: _emailController.text.trim());
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: _emailController.text.trim());
       showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            content: Text('Password resent link sent! please check your email'), //Email sent
+            content: Text(
+                'Password resent link sent! please check your email'), //Email sent
           );
         },
-      );}
-    on FirebaseAuthException catch (e) {
+      );
+    } on FirebaseAuthException catch (e) {
       print(e);
       showDialog(
           context: context,
@@ -44,13 +43,8 @@ class _ResetPasswordState extends State<ResetPassword>{
     }
   }
 
-
-
-
-
-
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white70,
@@ -58,9 +52,8 @@ class _ResetPasswordState extends State<ResetPassword>{
           "Reset Your Password",
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
-
         leading: IconButton(
-          onPressed: (){
+          onPressed: () {
             Navigator.pop(context);
           },
           icon: const Icon(Icons.arrow_back_ios_new),
@@ -75,7 +68,6 @@ class _ResetPasswordState extends State<ResetPassword>{
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-
               children: [
                 Image(image: AssetImage('images/WITS.png')),
                 SizedBox(
@@ -83,63 +75,67 @@ class _ResetPasswordState extends State<ResetPassword>{
                 ),
 
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal:20,vertical: 20),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Forgot your password? Don't worry. Enter your email address and we will send you a reset link :)",
-                        style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic, height: 1.5, color: Colors.black),
+                      Text(
+                        "Forgot your password? Don't worry. Enter your email address and we will send you a reset link :)",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontStyle: FontStyle.italic,
+                            height: 1.5,
+                            color: Colors.black),
                       )
-
                     ],
                   ),
-
                 ),
 
                 //Email text field
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10 ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
                   child: Container(
-                    decoration:BoxDecoration(
+                    decoration: BoxDecoration(
                         color: Color(0xffeeeeee),
                         borderRadius: BorderRadius.circular(10),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black26,
                             blurRadius: 6,
-                            offset: Offset(0,2),
+                            offset: Offset(0, 2),
                           )
-                        ]
-                    ),
+                        ]),
                     height: 50,
                     child: TextFormField(
-                        controller: _emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                            prefixIcon: Icon(
-                              Icons.email,
-                              color: Colors.black,
-                            ),
-                            //hint for email address
-                            hintText: 'Email Address',
-                            hintStyle: TextStyle(
-                              color: Colors.black38,
-                            )),
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 20),
+                          prefixIcon: Icon(
+                            Icons.email,
+                            color: Colors.black,
+                          ),
+                          //hint for email address
+                          hintText: 'Email Address',
+                          hintStyle: TextStyle(
+                            color: Colors.black38,
+                          )),
                     ),
-
                   ),
                 ),
 
                 //Reset button
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
                   child: GestureDetector(
-                    onTap:resetPassword,
+                    onTap: resetPassword,
                     child: Container(
                       padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(
@@ -153,13 +149,15 @@ class _ResetPasswordState extends State<ResetPassword>{
                               fontWeight: FontWeight.bold,
                               fontSize: 18),
                         ),
-
-                      ),),),),
-
-              ],),),),),);
-
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
-
-
-
 }
