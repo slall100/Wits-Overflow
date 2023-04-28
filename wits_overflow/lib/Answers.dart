@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wits_overflow/ProfileEdit.dart';
 import 'package:wits_overflow/model/Question.dart';
+import 'package:wits_overflow/view/history_view.dart';
 
 class CounterScreenState extends StatefulWidget {
   const CounterScreenState({super.key});
@@ -41,7 +43,7 @@ class CounterScreen extends State<CounterScreenState> {
       appBar: AppBar(
         backgroundColor: Colors.white70,
         title: !isSearching
-            ? Text("Wits Overflow",
+            ? Text("Questions",
                 style:
                     TextStyle(color: Colors.black, fontWeight: FontWeight.bold))
             : TextField(
@@ -78,13 +80,17 @@ class CounterScreen extends State<CounterScreenState> {
             tooltip: 'go to home',
           ),
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ProfileEdit(),
+                ));
+              },
               icon: Icon(Icons.person),
               tooltip: 'view profile',
               color: Colors.deepOrange),
           IconButton(
-              onPressed: Postquestion,
-              icon: Icon(Icons.question_mark_outlined),
+              onPressed: History,
+              icon: Icon(Icons.history),
               tooltip: 'Ask a Question',
               color: Colors.black)
         ],
@@ -221,6 +227,7 @@ class CounterScreen extends State<CounterScreenState> {
             children: <Widget>[
               Expanded(
                 child: TextField(
+                  controller: _questionController,
                   decoration: InputDecoration(hintText: "Ask a question"),
                 ),
               ),
@@ -239,7 +246,7 @@ class CounterScreen extends State<CounterScreenState> {
   }
 
   void Postquestion() async {
-    _question.question = _questionController.text;
+    _question.query = _questionController.text;
     _question.answer = "No answer yet";
     _question.created = DateTime.now();
 
@@ -248,5 +255,12 @@ class CounterScreen extends State<CounterScreenState> {
         .doc(FirebaseAuth.instance.currentUser?.uid)
         .collection('questions')
         .add(_question.toJson());
+    _questionController.text = "";
+  }
+
+  void History() {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => HistoryView(),
+    ));
   }
 }

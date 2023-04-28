@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:wits_overflow/homepage.dart';
 
 class ProfileEdit extends StatefulWidget {
   const ProfileEdit({Key? key}) : super(key: key);
@@ -92,7 +93,11 @@ class _ProfileEditState extends State<ProfileEdit> {
             Icons.arrow_back,
             color: Colors.white,
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => Dashboard(),
+            ));
+          },
         ),
         actions: [
           IconButton(
@@ -155,10 +160,11 @@ class _ProfileEditState extends State<ProfileEdit> {
                 ),
               ),
               SizedBox(height: 30),
-              buildTextField("Full Name", "Smriti", false, nameController),
+              buildTextField("Full Name", "Username", false, nameController),
               buildTextField(
-                  "Email", "smritilall99@gmail.com", false, emailController),
-              buildTextField("Password", "********", true, passwordController),
+                  "Email", "userEmail@gmail.com", false, emailController),
+              buildTextField(
+                  "Password", "Enter Password", true, passwordController),
               buildTextField(
                   "Location", "South Africa", false, locationController),
               SizedBox(height: 30),
